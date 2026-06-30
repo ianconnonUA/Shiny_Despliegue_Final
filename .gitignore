@@ -1,0 +1,15 @@
+# Historia y workspace de R
+.Rhistory
+.RData
+.Ruserdata
+
+# Archivos de datos muy grandes o crudos
+data/raw/
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Archivos de sistema (Mac/Windows)
+.DS_Store
+Thumbs.db
