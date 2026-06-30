@@ -357,6 +357,16 @@ server <- function(input, output, session) {
       
       # Asignar un valor estándar de habitaciones para que el Enrutador no asuma siempre que es un hotel chico
       if ("numberOfRooms" %in% names(dt_pred)) dt_pred[, numberOfRooms := 100]
+      
+      # VARIABLES POR DEFECTO PARA MEJORAR LA PREDICCIÓN MANUAL EN XGBOOST
+      # Si no tenemos estos datos, le decimos al modelo explícitamente que "faltan"
+      miss_cols <- grep("is_missing", names(dt_pred), value = TRUE)
+      if (length(miss_cols) > 0) dt_pred[, (miss_cols) := 1]
+      
+      # Valores lógicos típicos para búsquedas (0 días arruina la predicción)
+      if ("duration" %in% names(dt_pred)) dt_pred[, duration := 1]
+      if ("anticipation" %in% names(dt_pred)) dt_pred[, anticipation := 15]
+      if ("AR" %in% names(dt_pred)) dt_pred[, AR := 1] # Asumimos origen AR por defecto
     }
     
     # 5. INGENIERÍA DE DATOS AL VUELO
